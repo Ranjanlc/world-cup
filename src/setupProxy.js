@@ -9,4 +9,10 @@ module.exports = (app) => {
   //     changeOrigin: true,
   //   })
   // );
+  // app.use(
+  //   createProxyMiddleware('/login', {
+  //     target: 'http:://api.cup2022.ir/api/v1',
+  //     changeOrigin: true,
+  //   })
+  // );
 };

@@ -3,7 +3,7 @@ import FootballContext from '../../store/football-context';
 import MatchList from './MatchList';
 import classes from './Match.module.css';
 import { useState } from 'react';
-import usePagination from '../../helpers/use-pagination';
+import usePagination from '../../hooks/use-pagination';
 const Matches = (props) => {
   const [
     page,
@@ -15,7 +15,7 @@ const Matches = (props) => {
   const ctx = useContext(FootballContext);
   // const totalPages = Math.ceil(ctx.matches.length / 5);
   // console.log(totalPages);
-  console.log(ctx.matches.slice(startingIndex, endingIndex));
+  // console.log(ctx.matches.slice(startingIndex, endingIndex));
   // const pageIncreaseHandler = () => {
   //   setPage((page) => ++page);
   // };

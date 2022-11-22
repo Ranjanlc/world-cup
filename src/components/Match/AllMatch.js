@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import FootballContext from '../../store/football-context';
 import MatchList from './MatchList';
 import classes from './Match.module.css';
-import usePagination from '../../helpers/use-pagination';
+import usePagination from '../../hooks/use-pagination';
 const AllMatches = (props) => {
   const ctx = useContext(FootballContext);
   const [
