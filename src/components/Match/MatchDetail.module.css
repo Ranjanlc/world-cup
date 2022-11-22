@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flag {
+  width: 40px;
+  height: 30px;
+}
+.detail {
+  font-size: larger;
+  word-spacing: 2px;
+}
+.btn {
+  font-size: larger;
+  font-weight: bold;
+  width: 200px;
+  height: 50px;
+}
+.form input {
+  position: relative;
+  bottom: 2px;
+  width: 40px;
+  height: 25px;
+  margin: 0 5px;
+  border: 1px solid skyblue;
+  border-radius: 5px;
+}
+.form img {
+  width: 35px;
+  height: 25px;
+  position: relative;
+  top: 2px;
+  margin-bottom: 0;
+  padding: 0;
+}
+button:disabled {
+  background-color: beige;
+  cursor: not-allowed;
+}

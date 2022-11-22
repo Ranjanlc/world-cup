@@ -20,13 +20,11 @@ const AuthForm = () => {
   const navigate = useNavigate();
   // const authCtx = useContext(AuthContext);
   const ctx = useContext(FootballContext);
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
-
   const submitHandler = (event) => {
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
@@ -36,10 +34,9 @@ const AuthForm = () => {
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
+          ctx.setLoggedIn();
           ctx.setUserName(user.displayName.split(' ')[0]);
-          navigate('featured-matches', {
-            replace: true,
-          });
+          navigate('featured-matches');
           // ...
         })
         .catch((error) => {
@@ -49,7 +46,6 @@ const AuthForm = () => {
     }
     if (!isLogin) {
       const enteredName = nameInputRef.current.value;
-
       createUserWithEmailAndPassword(auth, enteredEmail, enteredPassword)
         .then((userCredential) => {
           updateProfile(auth.currentUser, {
@@ -62,17 +58,6 @@ const AuthForm = () => {
           console.log(err.message);
         });
     }
-
-    //     .then((data) => {
-    //       const expirationTime = new Date(
-    //         new Date().getTime() + +data.expiresIn * 1000
-    //       );
-    //       authCtx.login(data.idToken, expirationTime.toISOString());
-    //       history.replace('/');
-    //     })
-    //     .catch((err) => {
-    //       alert(err.message);
-    //     });
   };
 
   return (
@@ -108,7 +93,9 @@ const AuthForm = () => {
             className={classes.toggle}
             onClick={switchAuthModeHandler}
           >
-            {isLogin ? 'Create new account' : 'Login with existing account'}
+            {isLogin
+              ? "Don't have an account? Create one"
+              : 'Login with existing account'}
           </button>
         </div>
       </form>

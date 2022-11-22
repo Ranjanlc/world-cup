@@ -18,11 +18,12 @@ const AllMatches = (props) => {
     <ul style={{ padding: 0, listStyle: 'none' }}>
       {ctx.matches.slice(startingIndex, endingIndex).map((el) => (
         <MatchList
-          key={el._id}
+          key={el.id}
           homeTeam={el.home_team_en}
           awayTeam={el.away_team_en}
           awayFlag={el.away_flag}
           homeFlag={el.home_flag}
+          id={el.id}
         ></MatchList>
       ))}
       <li className={classes.item}>

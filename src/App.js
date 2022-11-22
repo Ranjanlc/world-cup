@@ -1,40 +1,16 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
+import Predictions from './components/Predictions/Predictions';
+import MatchDetail from './components/Match/MatchDetail';
 import Login from './components/Login/Login';
 import Layout from './components/Layout/Layout';
-import { Route, Routes, HashRouter } from 'react-router-dom';
+import { Route, Routes, HashRouter, Navigate } from 'react-router-dom';
 import Matches from './components/Match/Match';
 import FootballContext from './store/football-context';
 import AllMatches from './components/Match/AllMatch';
+// TODO:Add form validation everywhere
 function App() {
   const ctx = useContext(FootballContext);
-  console.log(ctx.token);
-  const fetchMatchesHandler = useCallback(async () => {
-    console.log('called');
-    try {
-      const response = await fetch('/match', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${ctx.token}`,
-        },
-      });
-      console.log(response.statusText, 'matches');
-      if (!response.ok) throw new Error(response.statusText);
-      const data = await response.json();
-      console.log(data);
-      ctx.setMatches(data.data);
-    } catch (err) {
-      if (err.message === 'Unauthorized') {
-        ctx.setTokenHandler();
-      } else {
-        console.log('Please refresh after 1-2 minutes');
-      }
-    }
-  }, [ctx.token]);
-  useEffect(() => {
-    fetchMatchesHandler();
-  }, [fetchMatchesHandler]);
-
+  const { isLoggedIn } = ctx;
   return (
     <Routes>
       <Route
@@ -45,22 +21,44 @@ function App() {
           </Layout>
         }
       />
+
       <Route
         path="/featured-matches"
         element={
-          <Layout>
-            <Matches />
-          </Layout>
+          isLoggedIn ? (
+            <Layout>
+              <Matches />
+            </Layout>
+          ) : (
+            <Navigate to="/" replace />
+          )
         }
-      />
+      ></Route>
+
       <Route
         path="/all-matches"
         element={
-          <Layout>
-            <AllMatches />
-          </Layout>
+          isLoggedIn ? (
+            <Layout>
+              <AllMatches />
+            </Layout>
+          ) : (
+            <Navigate to="/" replace />
+          )
         }
-      />
+      ></Route>
+      <Route
+        path="/:any/:matchId/*"
+        element={
+          isLoggedIn ? (
+            <Layout>
+              <MatchDetail />
+            </Layout>
+          ) : (
+            <Navigate to="/" replace />
+          )
+        }
+      ></Route>
     </Routes>
   );
 }

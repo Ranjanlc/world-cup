@@ -1,0 +1,21 @@
+.predictions {
+  width: 100%;
+}
+.container {
+  list-style: none;
+  padding: 0px;
+  border: 2px solid red;
+  border-radius: 3px;
+  box-shadow: 2px 2px 2px 2px rgb(150, 146, 184);
+}
+.list {
+  padding-bottom: 10px;
+  background-color: aliceblue;
+}
+.hr {
+  width: 1px;
+  margin: 0.2px;
+}
+.name {
+  font-weight: bold;
+}

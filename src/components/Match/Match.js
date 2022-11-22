@@ -2,7 +2,7 @@ import { Fragment, useContext } from 'react';
 import FootballContext from '../../store/football-context';
 import MatchList from './MatchList';
 import classes from './Match.module.css';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import usePagination from '../../hooks/use-pagination';
 const Matches = (props) => {
   const [
@@ -13,6 +13,33 @@ const Matches = (props) => {
     pageDecreaseHandler,
   ] = usePagination();
   const ctx = useContext(FootballContext);
+  const fetchMatchesHandler = useCallback(async () => {
+    console.log('called');
+    try {
+      const response = await fetch('/match', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${ctx.token}`,
+        },
+      });
+      console.log(response.statusText, 'matches');
+      if (!response.ok) throw new Error(response.statusText);
+      const data = await response.json();
+      console.log(data);
+      ctx.setMatches(data.data);
+    } catch (err) {
+      if (err.message === 'Unauthorized') {
+        ctx.setTokenHandler();
+      } else {
+        console.log('Please refresh after 1-2 minutes');
+      }
+    }
+  }, [ctx.token]);
+  useEffect(() => {
+    fetchMatchesHandler();
+  }, [fetchMatchesHandler]);
+
   // const totalPages = Math.ceil(ctx.matches.length / 5);
   // console.log(totalPages);
   // console.log(ctx.matches.slice(startingIndex, endingIndex));
@@ -25,16 +52,20 @@ const Matches = (props) => {
   // const arrayEnd = page * 5 + 1;
   // const arrayStart = page === 1 ? page * 5 - 5 : page * 5 - 4;
   const matchComponent = ctx.matches
-    .filter((el) => el.finished === 'FALSE')
+    .filter((el) => el.time_elapsed !== 'finished')
     .slice(startingIndex, endingIndex)
     .map((el) => {
       return (
         <MatchList
-          key={el._id}
+          key={el.id}
           homeTeam={el.home_team_en}
           awayTeam={el.away_team_en}
           awayFlag={el.away_flag}
           homeFlag={el.home_flag}
+          homeScore={el.home_score}
+          awayScore={el.away_score}
+          timeElapsed={el.time_elapsed}
+          id={el.id}
         ></MatchList>
       );
     });

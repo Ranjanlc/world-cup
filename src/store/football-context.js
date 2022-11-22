@@ -4,22 +4,23 @@ const FootballContext = React.createContext({
   isLoggedIn: false,
   matches: [],
   setMatches: () => {},
-  onLogin: () => {},
-  user: '',
+  setLoggedIn: () => {},
+  userName: '',
   setUserName: () => {},
   token: '',
   setTokenHandler: '',
 });
 
 export const FootballContextProvider = (props) => {
-  const [loginData, setIsLoginData] = useState([]);
+  const [isLogin, setIsLogin] = useState(false);
   const [matchData, setMatchData] = useState([]);
-  const [enterdName, setEnteredName] = useState('');
+  const existingName = localStorage.getItem('name');
+  const [enterdName, setEnteredName] = useState(existingName);
   // WE did this to avoid unnecesary api calls to the server.
   const existingToken = localStorage.getItem('token');
   const [token, setToken] = useState(existingToken);
-  const loginHandler = (data) => {
-    setIsLoginData(data);
+  const loginHandler = () => {
+    setIsLogin(true);
   };
   const tokenRefreshHandler = async () => {
     const response = await fetch('/user/login', {
@@ -43,13 +44,14 @@ export const FootballContextProvider = (props) => {
     setMatchData(matches);
   };
   const setUserNameHandler = (name) => {
+    localStorage.setItem('name', name);
     setEnteredName(name);
   };
   return (
     <FootballContext.Provider
       value={{
-        onLogin: loginHandler,
-        userData: loginData,
+        setLoggedIn: loginHandler,
+        isLoggedIn: isLogin,
         matches: matchData,
         setMatches: setMatchDataHandler,
         setUserName: setUserNameHandler,
