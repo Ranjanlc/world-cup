@@ -1,0 +1,30 @@
+.item {
+  margin: 1rem 0;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+  background-color: #c2e7f0;
+}
+.name {
+  /* min-width: 40%; */
+  word-spacing: 4px;
+  width: 70%;
+  font-weight: bolder;
+  font-size: large;
+}
+img {
+  width: 25px;
+  height: 20px;
+}
+.btn {
+  font-size: large;
+  background-color: teal;
+  border: 1px solid teal;
+  border-radius: 6px;
+  cursor: pointer;
+  color: white;
+  height: 100%;
+}
