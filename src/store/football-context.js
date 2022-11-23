@@ -23,16 +23,19 @@ export const FootballContextProvider = (props) => {
     setIsLogin(true);
   };
   const tokenRefreshHandler = async () => {
-    const response = await fetch('/user/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: 'studylc29@gmail.com',
-        password: 'Test1234',
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      'https://circumvent-cors.herokuapp.com/http://api.cup2022.ir/api/v1/user/login',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          email: 'studylc29@gmail.com',
+          password: 'Test1234',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
     console.log(response.statusText, 'token');
     const data = await response.json();
     console.log(data.data.token);
