@@ -15,9 +15,11 @@ const Matches = (props) => {
     pageDecreaseHandler,
   ] = usePagination();
   const ctx = useContext(FootballContext);
+  
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
+      console.log(ctx.token);
       const response = await fetch('/match', {
         method: 'GET',
         headers: {
