@@ -1,11 +1,24 @@
-import { Fragment } from 'react';
+import { Fragment, useCallback, useState, useEffect } from 'react';
 import classes from './Predictions.module.css';
 const Predictions = (props) => {
-  const { predictionData } = props;
-  //   console.log(predictionData);
+  const [predictionData, setPredictionData] = useState([]);
+  const { matchId, reloadPrediction } = props;
+  const fetchPredictionHandler = useCallback(async () => {
+    try {
+      const response = await fetch(
+        `https://world-cup-fa973-default-rtdb.firebaseio.com/predictions/${matchId}.json`
+      );
+      // console.log(response);
+      const data = await response.json();
+      setPredictionData(Object.values(data));
+    } catch (err) {}
+  }, [reloadPrediction]);
+  useEffect(() => {
+    fetchPredictionHandler();
+  }, [fetchPredictionHandler]);
   const predictionList = predictionData.map((el) => (
-    <Fragment>
-      <li key={Math.random().toFixed(5)} className={classes.list}>
+    <Fragment key={Math.random()}>
+      <li className={classes.list}>
         <span className={classes.name}>{el.name}</span>:
         <span>{el.prediction}</span>
       </li>

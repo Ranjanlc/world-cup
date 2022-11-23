@@ -6,17 +6,19 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import FootballContext from '../../store/football-context';
+import LoadingSpinner from '../UI/LoadingSpinner';
 import Predictions from '../Predictions/Predictions';
 import classes from './MatchDetail.module.css';
 const MatchDetail = (props) => {
   const params = useParams();
   const [indvData, setIndvData] = useState({});
   const [showInput, setShowInput] = useState(false);
+  const [reloadPrediction, setReloadPrediction] = useState(false);
   const previouslyPredicted = localStorage.getItem('predicted') === 'true';
   const [alreadyPredicted, setAlreadyPredicted] = useState(previouslyPredicted);
-  const [predictionData, setPredictionData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const homePredictionRef = useRef();
   const awayPredicitonRef = useRef();
   const matchId = params.matchId;
@@ -32,7 +34,9 @@ const MatchDetail = (props) => {
       });
       const data = await response.json();
       // console.log(data);
+
       setIndvData(data.data.at(0));
+      setIsLoading(false);
     } catch (err) {
       console.log('errror');
     }
@@ -45,6 +49,7 @@ const MatchDetail = (props) => {
   const homeFlag = <img src={indvData.home_flag} className={classes.flag} />;
   const gameStarted = indvData.time_elapsed !== 'notstarted';
   console.log(gameStarted);
+  /*
   const fetchPredictionHandler = useCallback(async () => {
     console.log('call');
     try {
@@ -59,6 +64,7 @@ const MatchDetail = (props) => {
   useEffect(() => {
     fetchPredictionHandler();
   }, [fetchPredictionHandler]);
+  */
   const addPredictionHandler = () => {
     if (!showInput) {
       setShowInput(true);
@@ -85,7 +91,7 @@ const MatchDetail = (props) => {
         .then((data) => {
           localStorage.setItem('predicted', 'true');
           setAlreadyPredicted(true);
-          fetchPredictionHandler();
+          setReloadPrediction(true);
         })
         .catch((err) => {
           console.log(err.message);
@@ -93,18 +99,28 @@ const MatchDetail = (props) => {
       setShowInput(false);
     }
   };
-  const predictionEnabled = (!gameStarted && !alreadyPredicted) || !gameStarted;
+
+  const predictionEnabled = !gameStarted && !alreadyPredicted;
+  console.log(!gameStarted, !alreadyPredicted);
   return (
     <Fragment>
-      <div className={classes.container}>
-        {homeFlag}
-        <span className={classes.detail}>
-          {indvData?.home_team_en} {gameStarted && indvData.home_score} vs{'  '}
-          {gameStarted && indvData.away_score}
-        </span>
-        {awayFlag}
-        <span className={classes.detail}>{indvData?.away_team_en}</span>
-      </div>
+      {isLoading && (
+        <div className="centered">
+          <LoadingSpinner />
+        </div>
+      )}
+      {!isLoading && (
+        <div className={classes.container}>
+          {homeFlag}
+          <span className={classes.detail}>
+            {indvData?.home_team_en} {gameStarted && indvData.home_score} vs
+            {'  '}
+            {gameStarted && indvData.away_score}
+          </span>
+          {awayFlag}
+          <span className={classes.detail}>{indvData?.away_team_en}</span>
+        </div>
+      )}
       <hr></hr>
       {showInput && (
         <div className="centered">
@@ -131,7 +147,7 @@ const MatchDetail = (props) => {
           Add predictions
         </button>
       </div>
-      <Predictions predictionData={predictionData} />
+      <Predictions matchId={matchId} reloadPrediction={reloadPrediction} />
     </Fragment>
   );
 };

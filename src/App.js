@@ -8,6 +8,7 @@ import Matches from './components/Match/Match';
 import FootballContext from './store/football-context';
 import AllMatches from './components/Match/AllMatch';
 // TODO:Add form validation everywhere
+//TODO:Add Error handling
 function App() {
   const ctx = useContext(FootballContext);
   const { isLoggedIn } = ctx;
@@ -21,7 +22,6 @@ function App() {
           </Layout>
         }
       />
-
       <Route
         path="/featured-matches"
         element={
