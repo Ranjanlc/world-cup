@@ -23,7 +23,7 @@ const Matches = (props) => {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${ctx.token}`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mzc5MDY2MmZkOWFhYzIyNjc1NWM3NGEiLCJpYXQiOjE2NjkxNjk1MTAsImV4cCI6MTY2OTI1NTkxMH0.6k1-xjOVk7EgTIb_JXMXIe6VDWZU8TcVohsbQJJ3us0`,
         },
       });
       console.log(response, 'matches');
