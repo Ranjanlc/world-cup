@@ -19,7 +19,6 @@ const Matches = (props) => {
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
-      if (!ctx.token) ctx.setTokenHandler();
       const response = await fetch('/match', {
         method: 'GET',
         headers: {
@@ -27,7 +26,7 @@ const Matches = (props) => {
           Authorization: `Bearer ${ctx.token}`,
         },
       });
-      console.log(response.statusText, 'matches');
+      console.log(response, 'matches');
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       console.log(data);
