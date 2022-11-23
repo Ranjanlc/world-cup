@@ -23,21 +23,26 @@ export const FootballContextProvider = (props) => {
     setIsLogin(true);
   };
   const tokenRefreshHandler = async () => {
-    const response = await fetch('/user/login', {
-      method: 'POST',
-      body: JSON.stringify({
-        email: 'studylc29@gmail.com',
-        password: 'Test1234',
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    console.log(response.statusText, 'token');
-    const data = await response.json();
-    console.log(data.data.token);
-    setToken(data.data.token);
-    localStorage.setItem('token', data.data.token);
+    try {
+      const response = await fetch('/user/login', {
+        method: 'POST',
+        body: JSON.stringify({
+          email: 'studylc29@gmail.com',
+          password: 'Test1234',
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      console.log(response, 'token');
+      if (!response.ok) throw new Error('error bhayoooo');
+      const data = await response.json();
+      console.log(data.data.token);
+      setToken(data.data.token);
+      localStorage.setItem('token', data.data.token);
+    } catch (err) {
+      console.log(err.message);
+    }
   };
   const setMatchDataHandler = (matches) => {
     console.log(matches);
