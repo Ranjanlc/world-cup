@@ -18,14 +18,17 @@ const Matches = (props) => {
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
-      const response = await fetch('/match', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${ctx.token}`,
-        },
-      });
-      console.log(response.statusText, 'matches');
+      const response = await fetch(
+        'https://circumvent-cors.herokuapp.com/http://api.cup2022.ir/api/v1/match',
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Mzc5MDY2MmZkOWFhYzIyNjc1NWM3NGEiLCJpYXQiOjE2NjkxNjk1MTAsImV4cCI6MTY2OTI1NTkxMH0.6k1-xjOVk7EgTIb_JXMXIe6VDWZU8TcVohsbQJJ3us0`,
+          },
+        }
+      );
+      console.log(response, 'matches');
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       console.log(data);
