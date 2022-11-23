@@ -3,15 +3,10 @@ import classes from './Layout.module.css';
 import MainNavigation from './MainNavigation';
 import FootballNavigation from './FootballNavigation';
 const Layout = (props) => {
-  const callingComponent = props.children.type.name;
-  console.log(callingComponent);
+  const { login } = props;
   return (
     <Fragment>
-      {callingComponent === 'AuthForm' ? (
-        <MainNavigation />
-      ) : (
-        <FootballNavigation />
-      )}
+      {login ? <MainNavigation /> : <FootballNavigation />}
       <main className={classes.main}>{props.children}</main>
     </Fragment>
   );

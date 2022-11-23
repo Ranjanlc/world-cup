@@ -17,7 +17,7 @@ function App() {
       <Route
         path="/"
         element={
-          <Layout>
+          <Layout login={'login'}>
             <Login />
           </Layout>
         }
