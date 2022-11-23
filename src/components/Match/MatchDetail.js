@@ -13,15 +13,16 @@ import Predictions from '../Predictions/Predictions';
 import classes from './MatchDetail.module.css';
 const MatchDetail = (props) => {
   const params = useParams();
+  const matchId = params.matchId;
   const [indvData, setIndvData] = useState({});
   const [showInput, setShowInput] = useState(false);
   const [reloadPrediction, setReloadPrediction] = useState(false);
-  const previouslyPredicted = localStorage.getItem('predicted') === 'true';
+  const previouslyPredicted = localStorage.getItem('predicted') === matchId;
   const [alreadyPredicted, setAlreadyPredicted] = useState(previouslyPredicted);
   const [isLoading, setIsLoading] = useState(true);
   const homePredictionRef = useRef();
   const awayPredicitonRef = useRef();
-  const matchId = params.matchId;
+
   // console.log(matchId);
   const ctx = useContext(FootballContext);
   const getSingleMatch = useCallback(async () => {
@@ -92,7 +93,7 @@ const MatchDetail = (props) => {
       )
         .then((response) => response.json())
         .then((data) => {
-          localStorage.setItem('predicted', 'true');
+          localStorage.setItem(`predicted`, matchId);
           setAlreadyPredicted(true);
           setReloadPrediction(true);
         })

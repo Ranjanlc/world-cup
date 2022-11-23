@@ -28,7 +28,6 @@ const Matches = (props) => {
           },
         }
       );
-      console.log(response, 'matches');
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
       console.log(data);
