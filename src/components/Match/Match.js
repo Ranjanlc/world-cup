@@ -19,6 +19,7 @@ const Matches = (props) => {
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
+      console.log(!ctx.token);
       if (!ctx.token) ctx.setTokenHandler();
       const response = await fetch('/match', {
         method: 'GET',
@@ -34,7 +35,7 @@ const Matches = (props) => {
       setIsLoading(false);
       ctx.setMatches(data.data);
     } catch (err) {
-      if (err.message === 'Unauthorized') {
+      if (err.message === 'Unauthorized' || err.message === '') {
         ctx.setTokenHandler();
       } else {
         console.log('Please refresh after 1-2 minutes');
