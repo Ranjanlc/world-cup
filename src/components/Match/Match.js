@@ -15,6 +15,7 @@ const Matches = (props) => {
     pageDecreaseHandler,
   ] = usePagination();
   const ctx = useContext(FootballContext);
+
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
