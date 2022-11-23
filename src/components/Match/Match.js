@@ -18,6 +18,7 @@ const Matches = (props) => {
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
+      if (!ctx.token) ctx.setTokenHandler();
       const response = await fetch('/match', {
         method: 'GET',
         headers: {
