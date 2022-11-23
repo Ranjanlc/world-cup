@@ -7,6 +7,7 @@ import usePagination from '../../hooks/use-pagination';
 import LoadingSpinner from '../UI/LoadingSpinner';
 const Matches = (props) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState('');
   const [
     page,
     startingIndex,
@@ -37,7 +38,7 @@ const Matches = (props) => {
       if (err.message === 'Unauthorized') {
         ctx.setTokenHandler();
       } else {
-        console.log('Please refresh after 1-2 minutes');
+        setError('Please refresh after 1-2 minutes');
       }
     }
   }, [ctx.token]);
@@ -73,7 +74,12 @@ const Matches = (props) => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && (
+      {error.length !== 0 && (
+        <div className="centered">
+          Kindly refresh after 1-2 minutes coz of API limitations
+        </div>
+      )}
+      {!isLoading && error.length === 0 && (
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {matchComponent}
           <li className={classes.item}>
