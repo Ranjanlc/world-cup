@@ -16,6 +16,7 @@ const MatchDetail = (props) => {
   const matchId = params.matchId;
   const [indvData, setIndvData] = useState({});
   const [showInput, setShowInput] = useState(false);
+  // Used this state to add it as dependency to reload predictions in Predictions.js
   const [reloadPrediction, setReloadPrediction] = useState(false);
   const previouslyPredicted = localStorage.getItem('predicted') === matchId;
   const [alreadyPredicted, setAlreadyPredicted] = useState(previouslyPredicted);
@@ -37,12 +38,10 @@ const MatchDetail = (props) => {
         }
       );
       const data = await response.json();
-      // console.log(data);
-
       setIndvData(data.data.at(0));
       setIsLoading(false);
     } catch (err) {
-      console.log('errror');
+      console.log(err.message);
     }
   }, []);
   useEffect(() => {
@@ -51,24 +50,11 @@ const MatchDetail = (props) => {
   // console.log(indvData);
   const awayFlag = <img src={indvData.away_flag} className={classes.flag} />;
   const homeFlag = <img src={indvData.home_flag} className={classes.flag} />;
+  const homeTeamName = indvData.home_team_en;
+  const awayTeamName = indvData.away_team_en;
   const gameStarted = indvData.time_elapsed !== 'notstarted';
   console.log(gameStarted);
-  /*
-  const fetchPredictionHandler = useCallback(async () => {
-    console.log('call');
-    try {
-      const response = await fetch(
-        `https://world-cup-fa973-default-rtdb.firebaseio.com/predictions/${matchId}.json`
-      );
-      // console.log(response);
-      const data = await response.json();
-      setPredictionData(Object.values(data));
-    } catch (err) {}
-  }, []);
-  useEffect(() => {
-    fetchPredictionHandler();
-  }, [fetchPredictionHandler]);
-  */
+  // We stored prediction in firebase
   const addPredictionHandler = () => {
     if (!showInput) {
       setShowInput(true);
@@ -87,12 +73,13 @@ const MatchDetail = (props) => {
           },
           body: JSON.stringify({
             name: ctx.userName || 'Anonymous',
-            prediction: `${indvData.home_team_en} ${homePredictionRef.current.value}-${awayPredicitonRef.current.value} ${indvData.away_team_en}`,
+            prediction: `${homeTeamName} ${homePredictionRef.current.value}-${awayPredicitonRef.current.value} ${awayTeamName}`,
           }),
         }
       )
         .then((response) => response.json())
-        .then((data) => {
+        .then(() => {
+          // WE set matchId too because it would help us to disable only correct predictions.
           localStorage.setItem(`predicted`, matchId);
           setAlreadyPredicted(true);
           setReloadPrediction(true);
@@ -105,7 +92,6 @@ const MatchDetail = (props) => {
   };
 
   const predictionEnabled = !gameStarted && !alreadyPredicted;
-  console.log(!gameStarted, !alreadyPredicted);
   return (
     <Fragment>
       {isLoading && (
@@ -117,12 +103,12 @@ const MatchDetail = (props) => {
         <div className={classes.container}>
           {homeFlag}
           <span className={classes.detail}>
-            {indvData?.home_team_en} {gameStarted && indvData.home_score} vs
+            {homeTeamName} {gameStarted && indvData.home_score} vs
             {'  '}
             {gameStarted && indvData.away_score}
           </span>
           {awayFlag}
-          <span className={classes.detail}>{indvData?.away_team_en}</span>
+          <span className={classes.detail}>{awayTeamName}</span>
         </div>
       )}
       <hr></hr>
@@ -131,14 +117,14 @@ const MatchDetail = (props) => {
           <form className={classes.form}>
             <img src={indvData.home_flag} />
             <span className={classes.detail}>
-              {indvData?.home_team_en} {gameStarted && indvData.home_score}{' '}
+              {homeTeamName} {gameStarted && indvData.home_score}{' '}
               <input type="number" ref={homePredictionRef} min={0} max={10} />{' '}
               vs
               {gameStarted && indvData.away_score}
             </span>
             <input type="number" min={0} max={10} ref={awayPredicitonRef} />
             <img src={indvData.away_flag} />
-            <span className={classes.detail}>{indvData?.away_team_en}</span>
+            <span className={classes.detail}>{indvData?.awayTeamName}</span>
           </form>
         </div>
       )}

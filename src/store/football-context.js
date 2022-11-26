@@ -8,7 +8,7 @@ const FootballContext = React.createContext({
   userName: '',
   setUserName: () => {},
   token: '',
-  setTokenHandler: '',
+  setTokenHandler: () => {},
 });
 
 export const FootballContextProvider = (props) => {
@@ -38,12 +38,11 @@ export const FootballContextProvider = (props) => {
     );
     console.log(response.statusText, 'token');
     const data = await response.json();
-    console.log(data.data.token);
+    // console.log(data.data.token);
     setToken(data.data.token);
     localStorage.setItem('token', data.data.token);
   };
   const setMatchDataHandler = (matches) => {
-    console.log(matches);
     setMatchData(matches);
   };
   const setUserNameHandler = (name) => {

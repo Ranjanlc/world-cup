@@ -1,8 +1,9 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import classes from './MatchList.module.css';
 const MatchList = (props) => {
   const { homeTeam, awayTeam, awayFlag, homeFlag, id } = props;
   const navigate = useNavigate();
+  // Added clickHandler to button instead of link because of some design issues.
   const gotoClickHandler = () => {
     navigate(id);
   };

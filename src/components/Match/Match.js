@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback } from 'react';
 import usePagination from '../../hooks/use-pagination';
 import LoadingSpinner from '../UI/LoadingSpinner';
 const Matches = (props) => {
+  const ctx = useContext(FootballContext);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState('');
   const [
@@ -15,7 +16,6 @@ const Matches = (props) => {
     pageIncreaseHandler,
     pageDecreaseHandler,
   ] = usePagination();
-  const ctx = useContext(FootballContext);
   const fetchMatchesHandler = useCallback(async () => {
     try {
       // setIsLoading(true);
@@ -31,7 +31,7 @@ const Matches = (props) => {
       );
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
-      console.log(data);
+      // console.log(data);
       setIsLoading(false);
       ctx.setMatches(data.data);
     } catch (err) {
@@ -42,10 +42,11 @@ const Matches = (props) => {
       }
     }
   }, [ctx.token]);
+  // Whenever ctx.token changes,we again fetch the match value
   useEffect(() => {
     fetchMatchesHandler();
   }, [fetchMatchesHandler]);
-
+  // Filtered the match which haven't finished
   const matchComponent = ctx.matches
     .filter((el) => el.time_elapsed !== 'finished')
     .slice(startingIndex, endingIndex)

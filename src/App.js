@@ -3,7 +3,7 @@ import Predictions from './components/Predictions/Predictions';
 import MatchDetail from './components/Match/MatchDetail';
 import Login from './components/Login/Login';
 import Layout from './components/Layout/Layout';
-import { Route, Routes, HashRouter, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import Matches from './components/Match/Match';
 import FootballContext from './store/football-context';
 import AllMatches from './components/Match/AllMatch';
@@ -17,6 +17,7 @@ function App() {
       <Route
         path="/"
         element={
+          // We passed login to identify the layout selection in Layout.js
           <Layout login={'login'}>
             <Login />
           </Layout>
@@ -33,7 +34,7 @@ function App() {
             <Navigate to="/" replace />
           )
         }
-      ></Route>
+      />
 
       <Route
         path="/all-matches"

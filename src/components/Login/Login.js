@@ -1,13 +1,9 @@
-import { useState, useRef, useContext, useCallback, useEffect } from 'react';
-// import { useHistory } from 'react-router-dom';
+import { useState, useRef, useContext } from 'react';
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
   updateProfile,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
-// import AuthContext from '../../store/auth-context';
 import classes from './Login.module.css';
 import { auth } from '../../firebase-config';
 import { useNavigate } from 'react-router-dom';
@@ -21,11 +17,11 @@ const AuthForm = () => {
   // const authCtx = useContext(AuthContext);
   const ctx = useContext(FootballContext);
   const [isLogin, setIsLogin] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
   const submitHandler = (event) => {
+    // Trigerred when either it is login or createAccount
     event.preventDefault();
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
@@ -35,13 +31,13 @@ const AuthForm = () => {
           // Signed in
           const user = userCredential.user;
           ctx.setLoggedIn();
+          // To use the first name of user
           ctx.setUserName(user.displayName.split(' ')[0]);
           navigate('featured-matches');
           // ...
         })
         .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+          console.log(error.message);
         });
     }
     if (!isLogin) {
@@ -51,7 +47,7 @@ const AuthForm = () => {
           updateProfile(auth.currentUser, {
             displayName: enteredName,
           });
-          console.log(userCredential);
+          // console.log(userCredential);
           setIsLogin(true);
         })
         .catch((err) => {
@@ -84,10 +80,8 @@ const AuthForm = () => {
           />
         </div>
         <div className={classes.actions}>
-          {!isLoading && (
-            <button>{isLogin ? 'Login' : 'Create Account'}</button>
-          )}
-          {isLoading && <p>Sending request...</p>}
+          <button>{isLogin ? 'Login' : 'Create Account'}</button>
+
           <button
             type="button"
             className={classes.toggle}
