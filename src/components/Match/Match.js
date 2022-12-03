@@ -20,7 +20,8 @@ const Matches = (props) => {
     try {
       // setIsLoading(true);
       const response = await fetch(
-        'https://express-worldcup.vercel.app/http://api.cup2022.ir/api/v1/match',
+        'https://express-worldcup.vercel.app/fetch?data=match',
+        // 'http://localhost:5000/fetch?data=match',
         {
           method: 'GET',
           headers: {
@@ -30,12 +31,12 @@ const Matches = (props) => {
         }
       );
       console.log(response);
-      if (!response.ok) throw new Error(response.statusText);
+      if (!response.ok) throw new Error(response.status);
       const data = await response.json();
       setIsLoading(false);
       ctx.setMatches(data.data);
     } catch (err) {
-      if (err.message === 'Unauthorized') {
+      if (err.message === '401') {
         ctx.setTokenHandler();
       } else {
         setError('Please refresh after 1-2 minutes');

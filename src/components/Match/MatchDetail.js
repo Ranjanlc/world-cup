@@ -29,7 +29,8 @@ const MatchDetail = (props) => {
   const getSingleMatch = useCallback(async () => {
     try {
       const response = await fetch(
-        `https://express-worldcup.vercel.app/http://api.cup2022.ir/api/v1/match/${matchId}`,
+        `https://express-worldcup.vercel.app/fetch?data=detail&Id=${matchId}`,
+        // `http://localhost:5000/fetch?data=detail&Id=${matchId}`,
         {
           headers: {
             'Content-Type': 'application/json',
