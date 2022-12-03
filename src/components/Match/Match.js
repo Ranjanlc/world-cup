@@ -20,7 +20,7 @@ const Matches = (props) => {
     try {
       // setIsLoading(true);
       const response = await fetch(
-        'https://circumvent-cors.herokuapp.com/http://api.cup2022.ir/api/v1/match',
+        'http://localhost:5000/http://api.cup2022.ir/api/v1/match',
         {
           method: 'GET',
           headers: {
