@@ -29,7 +29,7 @@ const MatchDetail = (props) => {
   const getSingleMatch = useCallback(async () => {
     try {
       const response = await fetch(
-        `https://circumvent-cors.herokuapp.com/http://api.cup2022.ir/api/v1/match/${matchId}`,
+        `https://express-worldcup.vercel.app/http://api.cup2022.ir/api/v1/match/${matchId}`,
         {
           headers: {
             'Content-Type': 'application/json',

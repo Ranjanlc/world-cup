@@ -20,7 +20,7 @@ const Matches = (props) => {
     try {
       // setIsLoading(true);
       const response = await fetch(
-        'https://circumvent-cors.herokuapp.com/http://api.cup2022.ir/api/v1/match',
+        'https://express-worldcup.vercel.app/http://api.cup2022.ir/api/v1/match',
         {
           method: 'GET',
           headers: {
@@ -29,9 +29,9 @@ const Matches = (props) => {
           },
         }
       );
+      console.log(response);
       if (!response.ok) throw new Error(response.statusText);
       const data = await response.json();
-      // console.log(data);
       setIsLoading(false);
       ctx.setMatches(data.data);
     } catch (err) {
