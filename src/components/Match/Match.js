@@ -7,7 +7,7 @@ import usePagination from '../../hooks/use-pagination';
 import LoadingSpinner from '../UI/LoadingSpinner';
 const Matches = (props) => {
   const ctx = useContext(FootballContext);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [
     page,
@@ -17,8 +17,9 @@ const Matches = (props) => {
     pageDecreaseHandler,
   ] = usePagination();
   const fetchMatchesHandler = useCallback(async () => {
+    setIsLoading(true);
+    console.log('aayo ta');
     try {
-      // setIsLoading(true);
       const response = await fetch(
         'https://express-worldcup.vercel.app/fetch?data=match',
         // 'http://localhost:5000/fetch?data=match',
@@ -45,30 +46,46 @@ const Matches = (props) => {
   }, [ctx.token]);
   // Whenever ctx.token changes,we again fetch the match value
   useEffect(() => {
-    fetchMatchesHandler();
+    if (ctx.matches.length === 0) {
+      fetchMatchesHandler();
+    }
   }, [fetchMatchesHandler]);
   // Filtered the match which haven't finished
-  const matchComponent = ctx.matches
-    .filter((el) => el.time_elapsed !== 'finished')
+  const filteredMatches = ctx.matches.filter(
+    (el) =>
+      el.home_team_en === 'Argentina' ||
+      el.away_team_en === 'Argentina' ||
+      el.home_team_en === 'France' ||
+      el.away_team_en === 'France'
+  );
+  const matchComponent = filteredMatches
     .slice(startingIndex, endingIndex)
     .map((el) => {
+      const {
+        home_team_en: homeTeamName,
+        away_team_en: awayTeamName,
+        away_flag: awayFlag,
+        home_flag: homeFlag,
+        home_score: homeScore,
+        away_score: awayScore,
+        time_elapsed: timeElapsed,
+      } = el;
       return (
         <MatchList
           key={el.id}
-          homeTeam={el.home_team_en}
-          awayTeam={el.away_team_en}
-          awayFlag={el.away_flag}
-          homeFlag={el.home_flag}
-          homeScore={el.home_score}
-          awayScore={el.away_score}
-          timeElapsed={el.time_elapsed}
+          homeTeam={homeTeamName}
+          awayTeam={awayTeamName}
+          awayFlag={awayFlag}
+          homeFlag={homeFlag}
+          homeScore={homeScore}
+          awayScore={awayScore}
+          timeElapsed={timeElapsed}
           id={el.id}
-        ></MatchList>
+        />
       );
     });
-  const totalPages = Math.ceil(
-    ctx.matches.filter((el) => el.finished === 'FALSE').length / 5
-  );
+  console.log(matchComponent);
+  const totalPages = Math.ceil(filteredMatches.length / 5);
   return (
     <Fragment>
       {isLoading && (
@@ -81,9 +98,10 @@ const Matches = (props) => {
           Kindly refresh after 1-2 minutes coz of API limitations
         </div>
       )}
-      {!isLoading && error.length === 0 && (
+      {!isLoading && error.length === 0 && matchComponent.length !== 0 && (
         <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
           {matchComponent}
+
           <li className={classes.item}>
             {page !== 1 && (
               <button onClick={pageDecreaseHandler}>

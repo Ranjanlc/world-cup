@@ -17,16 +17,24 @@ const FootballNavigation = (props) => {
   };
   return (
     <header className={classes.header}>
-      <Link to="/">
-        <div className={classes.logo}>Welcome {userName},</div>
-      </Link>
+      {/* <Link> */}
+      {/* The style to avoid text select while double clicking */}
+      <div className={classes.logo} style={{ userSelect: 'none' }}>
+        Welcome {userName},
+      </div>
+
+      {/* </Link> */}
       <nav>
         <ul onClick={listClickHandler}>
           <li className={classes.active}>
-            <Link to="/featured-matches">Upcoming matches</Link>
+            <Link to="/featured-matches" replace>
+              Upcoming matches
+            </Link>
           </li>
           <li>
-            <Link to="/all-matches">All matches</Link>
+            <Link to="/all-matches" replace>
+              All matches
+            </Link>
           </li>
         </ul>
       </nav>

@@ -8,7 +8,7 @@ const MatchList = (props) => {
     navigate(id);
   };
   return (
-    <li className={classes.item}>
+    <li className={classes.item} style={{ userSelect: 'none' }}>
       <figure className={classes.name}>
         <img src={homeFlag} /> {homeTeam} vs <img src={awayFlag} /> {awayTeam}{' '}
       </figure>
