@@ -1,10 +1,11 @@
-import { useState, useRef, useContext } from 'react';
+import { useState, useRef, useContext, Fragment } from 'react';
 import {
   createUserWithEmailAndPassword,
   updateProfile,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import classes from './Login.module.css';
+import Error from '../../assets/error';
 import { auth } from '../../firebase-config';
 import { useNavigate } from 'react-router-dom';
 import FootballContext from '../../store/football-context';
@@ -17,6 +18,7 @@ const AuthForm = () => {
   // const authCtx = useContext(AuthContext);
   const ctx = useContext(FootballContext);
   const [isLogin, setIsLogin] = useState(true);
+  const [error, setError] = useState(null);
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
@@ -34,13 +36,21 @@ const AuthForm = () => {
           // To use the first name of user
           ctx.setUserName(user.displayName.split(' ')[0]);
           navigate('featured-matches');
+          setError(null);
           // ...
         })
-        .catch((error) => {
-          console.log(error.message);
+        .catch((err) => {
+          const errMsg = err.message;
+          if (errMsg.includes('wrong-password')) {
+            setError('Wrong password');
+          }
+          if (errMsg.includes('not-found')) {
+            setError('Sorry,we dont have account with this email.');
+          }
         });
     }
     if (!isLogin) {
+      console.log('yo0 chalyo0');
       const enteredName = nameInputRef.current.value;
       createUserWithEmailAndPassword(auth, enteredEmail, enteredPassword)
         .then((userCredential) => {
@@ -48,16 +58,34 @@ const AuthForm = () => {
             displayName: enteredName,
           });
           // console.log(userCredential);
+          setError(null);
           setIsLogin(true);
         })
         .catch((err) => {
-          console.log(err.message);
+          console.log('yaha aayo ta?');
+          const errMsg = err.message;
+          if (errMsg.includes('invalid-email')) {
+            setError('Email is invalid');
+          }
+          if (errMsg.includes('weak-password')) {
+            console.log('cdsc');
+            setError('Please enter 6-character password ');
+          }
+          if (errMsg.includes('already-in-use')) {
+            setError('You already have an account with this email.');
+            setIsLogin(true);
+          }
         });
     }
   };
-
+  const errorCloseHandler = () => {
+    setError(null);
+  };
   return (
     <section className={classes.auth}>
+      {error && (
+        <Error errorMsg={error} errorCloseHandler={errorCloseHandler} />
+      )}
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
       <form onSubmit={submitHandler}>
         {!isLogin && (

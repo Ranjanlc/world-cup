@@ -13,7 +13,7 @@ const AllMatches = (props) => {
     pageDecreaseHandler,
   ] = usePagination();
   console.log(ctx.matches.slice(startingIndex, endingIndex));
-  const totalPages = Math.ceil(ctx.matches.length / 5);
+  const totalPages = Math.ceil(ctx.matches.length / 6);
   return (
     <ul style={{ padding: 0, listStyle: 'none' }}>
       {ctx.matches.slice(startingIndex, endingIndex).map((el) => (
@@ -30,10 +30,13 @@ const AllMatches = (props) => {
         {page !== 1 && (
           <button onClick={pageDecreaseHandler}>&#8592; Previous Page</button>
         )}
-        <span>
-          {page}/{totalPages}
+        <span className={classes.page}>
+          <span className={classes['previous-page']}>{page}</span>
+          <span className={classes['next-page']}>/{totalPages}</span>
         </span>
-        {<button onClick={pageIncreaseHandler}>Next Page &#8594;</button>}
+        {page !== totalPages && (
+          <button onClick={pageIncreaseHandler}>Next Page &#8594;</button>
+        )}
       </li>
     </ul>
   );

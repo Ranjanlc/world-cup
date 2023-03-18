@@ -19,9 +19,12 @@
   color: white;
   margin-bottom: 2.5rem;
 }
+svg {
+  width: 30px;
+}
 
 .control {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .control label {

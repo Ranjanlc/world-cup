@@ -29,7 +29,7 @@
   justify-content: center;
 }
 
-svg {
+.spinner svg {
   width: 50%;
   max-width: 10rem;
   animation: rotate 1s linear infinite;

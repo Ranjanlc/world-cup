@@ -13,7 +13,15 @@ button {
   cursor: pointer;
   border: 1px solid white;
 }
-span {
+.previous-page {
+  color: rgba(213, 4, 255, 0.932);
+  font-weight: bolder;
+}
+.next-page {
+  color: white;
+  font-weight: bolder;
+}
+.page {
   font-size: 1.1rem;
-  margin: 0 1rem;
+  margin: 0 0.7rem;
 }

@@ -9,8 +9,8 @@ const usePagination = () => {
     setPage((page) => --page);
   };
   // It is just to adjust page number and data selection
-  const endingIndex = page === 1 ? page * 5 : page * 5 + 1;
-  const startingIndex = page === 1 ? page * 5 - 5 : page * 5 - 4;
+  const startingIndex = page === 1 ? 0 : page * 6 - 6;
+  const endingIndex = page === 1 ? 6 : page * 6;
   return [
     page,
     startingIndex,

@@ -1,0 +1,22 @@
+.error {
+  display: flex;
+  align-items: center;
+  background-color: #ffbaba;
+  color: red;
+  font-weight: bold;
+  padding: 0 1rem;
+  justify-content: space-between;
+  cursor: default;
+}
+.container {
+  display: flex;
+  /* width: 40%; */
+  /* justify-content: space-around; */
+  align-items: center;
+}
+.container svg {
+  margin-right: 4px;
+}
+.error span {
+  cursor: pointer;
+}
