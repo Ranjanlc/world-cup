@@ -9,6 +9,7 @@ import Error from '../../assets/error';
 import { auth } from '../../firebase-config';
 import { useNavigate } from 'react-router-dom';
 import FootballContext from '../../store/football-context';
+import { EyeBtnClose, EyeBtnOpen } from '../../assets/eyeBtn';
 const AuthForm = () => {
   // const history = useHistory();
   const nameInputRef = useRef();
@@ -19,6 +20,8 @@ const AuthForm = () => {
   const ctx = useContext(FootballContext);
   const [isLogin, setIsLogin] = useState(true);
   const [error, setError] = useState(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const switchAuthModeHandler = () => {
     setIsLogin((prevState) => !prevState);
   };
@@ -81,13 +84,19 @@ const AuthForm = () => {
   const errorCloseHandler = () => {
     setError(null);
   };
+  const passwordChangeHandler = (showOrHide) => {
+    showOrHide === 'show' ? setIsFocused(true) : setIsFocused(false);
+  };
+  const eyeClickHandler = () => {
+    setShowPassword((prevState) => !prevState);
+  };
   return (
     <section className={classes.auth}>
       {error && (
         <Error errorMsg={error} errorCloseHandler={errorCloseHandler} />
       )}
       <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
-      <form onSubmit={submitHandler}>
+      <form onSubmit={submitHandler} className={classes.form}>
         {!isLogin && (
           <div className={classes.control}>
             <label htmlFor="name">Your Name</label>
@@ -98,14 +107,25 @@ const AuthForm = () => {
           <label htmlFor="email">Your Email</label>
           <input type="email" id="email" required ref={emailInputRef} />
         </div>
-        <div className={classes.control}>
+        <div className={classes['password-control']}>
           <label htmlFor="password">Your Password</label>
-          <input
-            type="password"
-            id="password"
-            required
-            ref={passwordInputRef}
-          />
+          <div
+            className={`${classes.password} ${isFocused ? classes.active : ''}`}
+          >
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              required
+              ref={passwordInputRef}
+              onFocus={passwordChangeHandler.bind(null, 'show')}
+              onBlur={passwordChangeHandler.bind(null, 'hide')}
+            />
+            {showPassword ? (
+              <EyeBtnClose clickHandler={eyeClickHandler} />
+            ) : (
+              <EyeBtnOpen clickHandler={eyeClickHandler} />
+            )}
+          </div>
         </div>
         <div className={classes.actions}>
           <button>{isLogin ? 'Login' : 'Create Account'}</button>

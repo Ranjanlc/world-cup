@@ -27,14 +27,14 @@ svg {
   margin-bottom: 1rem;
 }
 
-.control label {
+.form label {
   display: block;
   color: white;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
-.control input {
+.form input {
   font: inherit;
   background-color: #f1e1fc;
   color: #38015c;
@@ -44,7 +44,26 @@ svg {
   text-align: left;
   padding: 0.25rem;
 }
-.control input:focus {
+
+.password {
+  display: flex;
+  background-color: rgb(232, 240, 254);
+  border-radius: 0.5rem;
+}
+.password-control .active {
+  border: solid rgb(59, 35, 181) 1.5px;
+}
+.password-control svg {
+  cursor: pointer;
+  margin-right: 4px;
+}
+.password-control svg:hover {
+  background-color: rgba(169, 171, 174, 0.18);
+}
+.password-control input:focus {
+  outline: none;
+}
+.form .control input:focus {
   outline: solid rgb(59, 35, 181) 1.5px;
 }
 
